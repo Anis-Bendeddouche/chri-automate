@@ -1,0 +1,214 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+.w{background:#07111f;color:#fff}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:0.5px solid rgba(255,255,255,0.08)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:32px;height:32px;background:#0f7a55;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.nav-logo-mark i{font-size:18px;color:#fff}
+.nav-brand{font-size:15px;font-weight:700;color:#fff}
+.nav-links{display:flex;gap:1.5rem}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;cursor:pointer}
+.nav-links a:hover{color:#fff}
+.nav-cta{font-size:13px;padding:7px 16px;background:#0f7a55;color:#fff;border:none;border-radius:6px;cursor:pointer}
+.nav-cta:hover{background:#0a5e41}
+.hero{padding:5rem 2rem 4rem;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 50% 0%,rgba(15,122,85,0.12) 0%,transparent 60%)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#2dd4a0;background:rgba(45,212,160,0.1);border:0.5px solid rgba(45,212,160,0.25);padding:5px 14px;border-radius:20px;margin-bottom:1.75rem}
+.dot{width:5px;height:5px;border-radius:50%;background:#2dd4a0;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-size:2.6rem;font-weight:700;line-height:1.15;max-width:520px;margin:0 auto 1.25rem;color:#fff}
+.hero h1 span{color:#2dd4a0}
+.hero-sub{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.7;max-width:420px;margin:0 auto 2.25rem}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:12px 24px;background:#0f7a55;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{background:#0a5e41}
+.btn-ghost{padding:12px 24px;background:transparent;color:rgba(255,255,255,0.7);border:0.5px solid rgba(255,255,255,0.2);border-radius:8px;font-size:14px;cursor:pointer}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.5);color:#fff}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);margin:3rem 2rem 0;border:0.5px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden}
+.metric{padding:1.5rem;text-align:center;border-right:0.5px solid rgba(255,255,255,0.08)}
+.metric:last-child{border-right:none}
+.metric-n{font-size:2rem;font-weight:700;color:#2dd4a0}
+.metric-l{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px}
+.section{padding:3.5rem 2rem}
+.section-top{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
+.section-tag{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2dd4a0;margin-bottom:.35rem}
+.section-title{font-size:1.5rem;font-weight:700;color:#fff}
+.section-sub{font-size:13px;color:rgba(255,255,255,0.4);max-width:260px;text-align:right;line-height:1.6}
+.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.svc{background:#0e1e30;border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.5rem;transition:border-color .2s}
+.svc:hover{border-color:rgba(45,212,160,0.3)}
+.svc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.svc-ico{width:40px;height:40px;background:rgba(15,122,85,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.svc-ico i{font-size:20px;color:#2dd4a0}
+.svc-num{font-size:11px;color:rgba(255,255,255,0.2)}
+.svc h3{font-size:14px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.svc p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6}
+.process{padding:3.5rem 2rem;border-top:0.5px solid rgba(255,255,255,0.06)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:1.75rem;position:relative}
+.steps::before{content:'';position:absolute;top:20px;left:10%;right:10%;height:0.5px;background:rgba(255,255,255,0.08)}
+.step{text-align:center;padding:0 .5rem}
+.step-circle{width:40px;height:40px;border-radius:50%;background:#0e1e30;border:0.5px solid rgba(45,212,160,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;position:relative;z-index:1}
+.step-circle i{font-size:18px;color:#2dd4a0}
+.step h4{font-size:13px;font-weight:700;color:#fff;margin-bottom:.3rem}
+.step p{font-size:12px;color:rgba(255,255,255,0.38);line-height:1.5}
+.about{padding:3.5rem 2rem;border-top:0.5px solid rgba(255,255,255,0.06);display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.about-text h2{font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.about-text p{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7}
+.about-feats{display:flex;flex-direction:column;gap:10px}
+.feat{display:flex;align-items:center;gap:10px;padding:14px;background:#0e1e30;border:0.5px solid rgba(255,255,255,0.07);border-radius:10px}
+.feat i{font-size:18px;color:#2dd4a0;flex-shrink:0}
+.feat span{font-size:13px;color:rgba(255,255,255,0.65)}
+.contact{padding:3.5rem 2rem;border-top:0.5px solid rgba(255,255,255,0.06)}
+.contact-inner{background:#0e1e30;border:0.5px solid rgba(255,255,255,0.07);border-radius:16px;padding:2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}
+.contact-left h2{font-size:1.3rem;font-weight:700;color:#fff;margin-bottom:.5rem}
+.contact-left p{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:1.5rem}
+.contact-items{display:flex;flex-direction:column;gap:10px}
+.ci{display:flex;align-items:center;gap:10px}
+.ci i{font-size:16px;color:#2dd4a0}
+.ci span{font-size:13px;color:rgba(255,255,255,0.6)}
+.contact-right{background:#07111f;border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:1.5rem}
+.contact-right p{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.08em}
+.cta-big{width:100%;padding:13px;background:#0f7a55;color:#fff;border:none;border-radius:8px;font-size:14px;font-family:Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.75rem}
+.cta-big:hover{background:#0a5e41}
+.cta-ghost{width:100%;padding:13px;background:transparent;color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.15);border-radius:8px;font-size:14px;font-family:Arial,sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.cta-ghost:hover{border-color:rgba(255,255,255,0.3)}
+.cta-info{margin-top:.75rem;display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,0.3)}
+footer{padding:1.25rem 2rem;border-top:0.5px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
+.footer-brand{display:flex;align-items:center;gap:8px}
+.footer-brand-mark{width:24px;height:24px;background:#0f7a55;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.footer-brand-mark i{font-size:13px;color:#fff}
+.footer-brand span{font-size:13px;color:rgba(255,255,255,0.4)}
+.footer-copy{font-size:12px;color:rgba(255,255,255,0.25)}
+</style>
+
+<div class="w">
+  <nav class="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-mark"><i class="ti ti-cpu" aria-hidden="true"></i></div>
+      <span class="nav-brand">AutoTech Industrie</span>
+    </div>
+    <div class="nav-links">
+      <a>Services</a>
+      <a>Processus</a>
+      <a>À propos</a>
+    </div>
+    <button class="nav-cta" onclick="sendPrompt('Je veux demander un devis')">Devis gratuit ↗</button>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="dot"></span>Projets en cours · Oran, Algérie</div>
+    <h1>Automatisation industrielle <span>nouvelle génération</span></h1>
+    <p class="hero-sub">Des solutions sur mesure pour moderniser vos lignes de production, réduire les arrêts et optimiser vos rendements.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="sendPrompt('Quels services proposez-vous exactement ?')"><i class="ti ti-bolt" aria-hidden="true"></i>Découvrir nos services</button>
+      <button class="btn-ghost" onclick="sendPrompt('Comment se déroule un projet d\'automatisation avec vous ?')">Voir le processus</button>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="metric-n">+120</div><div class="metric-l">Projets livrés</div></div>
+      <div class="metric"><div class="metric-n">15 ans</div><div class="metric-l">D'expérience terrain</div></div>
+      <div class="metric"><div class="metric-n">98%</div><div class="metric-l">Taux de satisfaction</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-top">
+      <div>
+        <div class="section-tag">Prestations</div>
+        <div class="section-title">Ce que nous maîtrisons</div>
+      </div>
+      <div class="section-sub">Interventions sur site et à distance pour toute l'Algérie</div>
+    </div>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-top"><div class="svc-ico"><i class="ti ti-cpu" aria-hidden="true"></i></div><span class="svc-num">01</span></div>
+        <h3>Programmation d'automates (API)</h3>
+        <p>Développement de programmes pour Siemens S7, Schneider Modicon et Allen-Bradley — avec mise en service complète.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-top"><div class="svc-ico"><i class="ti ti-device-desktop-analytics" aria-hidden="true"></i></div><span class="svc-num">02</span></div>
+        <h3>Supervision HMI / SCADA</h3>
+        <p>Interfaces de contrôle temps réel : visualisation des états machine, alarmes, historiques et rapports automatisés.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-top"><div class="svc-ico"><i class="ti ti-tool" aria-hidden="true"></i></div><span class="svc-num">03</span></div>
+        <h3>Maintenance et dépannage</h3>
+        <p>Diagnostic rapide sur site, remplacement de composants défectueux et remise en service dans les meilleurs délais.</p>
+      </div>
+      <div class="svc">
+        <div class="svc-top"><div class="svc-ico"><i class="ti ti-refresh-dot" aria-hidden="true"></i></div><span class="svc-num">04</span></div>
+        <h3>Rétrofit de machines</h3>
+        <p>Modernisation d'équipements vieillissants : remplacement des parties obsolètes sans arrêt prolongé de la production.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="process">
+    <div class="section-tag">Notre méthode</div>
+    <div class="section-title">De l'analyse à la mise en service</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle"><i class="ti ti-clipboard-list" aria-hidden="true"></i></div>
+        <h4>Analyse</h4>
+        <p>Étude de vos besoins et contraintes opérationnelles</p>
+      </div>
+      <div class="step">
+        <div class="step-circle"><i class="ti ti-pencil-plus" aria-hidden="true"></i></div>
+        <h4>Conception</h4>
+        <p>Architecture technique et plan de développement</p>
+      </div>
+      <div class="step">
+        <div class="step-circle"><i class="ti ti-code" aria-hidden="true"></i></div>
+        <h4>Réalisation</h4>
+        <p>Programmation, câblage et tests en atelier</p>
+      </div>
+      <div class="step">
+        <div class="step-circle"><i class="ti ti-rocket" aria-hidden="true"></i></div>
+        <h4>Mise en service</h4>
+        <p>Déploiement sur site, formation et suivi</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="about">
+    <div class="about-text">
+      <div class="section-tag">À propos</div>
+      <h2>Une équipe d'ingénieurs passionnés</h2>
+      <p>Depuis 2009, nous accompagnons les industries algériennes dans leur transition vers des systèmes automatisés fiables et performants. Chaque projet est traité avec rigueur, de la spec technique jusqu'à la livraison finale.</p>
+    </div>
+    <div class="about-feats">
+      <div class="feat"><i class="ti ti-shield-check" aria-hidden="true"></i><span>Garantie 24 mois sur tous les développements</span></div>
+      <div class="feat"><i class="ti ti-clock" aria-hidden="true"></i><span>Intervention d'urgence sous 4h en wilaya d'Oran</span></div>
+      <div class="feat"><i class="ti ti-school" aria-hidden="true"></i><span>Formation incluse pour vos équipes de maintenance</span></div>
+      <div class="feat"><i class="ti ti-certificate" aria-hidden="true"></i><span>Ingénieurs certifiés Siemens & Schneider Electric</span></div>
+    </div>
+  </div>
+
+  <div class="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <h2>Parlons de votre projet</h2>
+        <p>Un projet d'automatisation, une panne urgente ou une demande de rétrofit ? Réponse garantie sous 24h.</p>
+        <div class="contact-items">
+          <div class="ci"><i class="ti ti-mail" aria-hidden="true"></i><span>chriautomate@gmail.com</span></div>
+          <div class="ci"><i class="ti ti-phone" aria-hidden="true"></i><span>0795 05 04 59</span></div>
+          <div class="ci"><i class="ti ti-map-pin" aria-hidden="true"></i><span>Zone industrielle, Oran, Algérie</span></div>
+        </div>
+      </div>
+      <div class="contact-right">
+        <p>Demande rapide</p>
+        <button class="cta-big" onclick="sendPrompt('Je souhaite un devis pour un projet d\'automatisation')"><i class="ti ti-send" aria-hidden="true"></i>Envoyer une demande</button>
+        <button class="cta-ghost" onclick="sendPrompt('Je veux appeler pour un dépannage urgent au 0795050459')"><i class="ti ti-phone" aria-hidden="true"></i>Appeler maintenant</button>
+        <div class="cta-info"><i class="ti ti-check" aria-hidden="true"></i>Devis gratuit · Sans engagement</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-brand-mark"><i class="ti ti-cpu" aria-hidden="true"></i></div>
+      <span>AutoTech Industrie</span>
+    </div>
+    <span class="footer-copy">&copy; 2026 — Tous droits réservés</span>
+  </footer>
+</div>
