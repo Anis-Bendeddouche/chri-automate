@@ -2,59 +2,52 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- FE-02: viewport-fit=cover pour gérer le visual viewport sur iOS -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Chriautomate — Agent IA sur mesure pour votre business. Restauration, médecin, immobilier, grossiste. 24h/24, 7j/7. وهاني راسك.">
   <title>Chriautomate · وهاني راسك</title>
 
-  <!-- ================================================================
-       FONTS
-       Sora = display (tech, arrondi, distinctif)
-       Inter = corps
-  ================================================================ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
     /* ================================================================
-       TOKENS — modifiez ici pour personnaliser tout le site
+       TOKENS
     ================================================================ */
     :root {
-      --void:        #080b14;   /* Fond principal très sombre */
-      --surface:     #0d1117;   /* Fond panneaux */
-      --card:        #111827;   /* Fond cartes */
-      --card-hover:  #161f2e;   /* Hover cartes */
+      --void:        #080b14;
+      --surface:     #0d1117;
+      --card:        #111827;
+      --card-hover:  #161f2e;
       --border:      rgba(255,255,255,0.07);
-      --border-v:    rgba(124,58,237,0.45);  /* Violet border */
-      --border-c:    rgba(6,182,212,0.4);    /* Cyan border */
-
-      --violet:      #7c3aed;   /* Violet primaire */
+      --border-v:    rgba(124,58,237,0.45);
+      --border-c:    rgba(6,182,212,0.4);
+      --violet:      #7c3aed;
       --violet-dk:   #6d28d9;
       --violet-lt:   #a78bfa;
-      --cyan:        #06b6d4;   /* Cyan accent */
+      --cyan:        #06b6d4;
       --cyan-lt:     #67e8f9;
-      --green:       #10b981;   /* Vert "en ligne" */
-
+      --green:       #10b981;
       --text:        #f1f5f9;
       --text-sub:    rgba(241,245,249,0.6);
       --text-muted:  rgba(241,245,249,0.3);
-
       --glow-v:      0 0 30px rgba(124,58,237,0.4);
       --glow-c:      0 0 30px rgba(6,182,212,0.4);
       --glow-g:      0 0 16px rgba(16,185,129,0.5);
-
       --font-d: 'Sora', system-ui, sans-serif;
       --font-b: 'Inter', system-ui, sans-serif;
-
       --r-sm: 10px;
       --r-md: 16px;
       --r-lg: 24px;
       --r-xl: 32px;
       --ease: cubic-bezier(0.4,0,0.2,1);
       --t: 0.3s var(--ease);
+      /* FE-02: safe area insets pour iPhone notch/Dynamic Island */
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-top: env(safe-area-inset-top, 0px);
     }
 
-    /* ================================================================ RESET */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -67,6 +60,20 @@
     a { color: inherit; text-decoration: none; }
     img { display: block; max-width: 100%; }
 
+    /* FE-02: suppression flash bleu iOS sur tous les éléments tactiles */
+    button, a, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* FE-02: zones de touch minimum 48px sur mobile */
+    @media (max-width: 768px) {
+      button, .cf-btn, .ac-cta, .faq-q, .nav-cta, .nav-login {
+        min-height: 48px;
+      }
+      a { min-height: 44px; display: inline-flex; align-items: center; }
+      .nav-links a, .f-col ul li a { min-height: unset; display: inline; }
+    }
+
     /* ================================================================
        NAV
     ================================================================ */
@@ -74,12 +81,14 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
       display: flex; align-items: center; justify-content: space-between;
       padding: 1.1rem 5%;
+      /* FE-02: padding-top avec safe area pour Dynamic Island */
+      padding-top: calc(1.1rem + var(--safe-top));
       background: rgba(8,11,20,0.8);
       backdrop-filter: blur(20px) saturate(1.5);
       border-bottom: 1px solid var(--border);
       transition: padding var(--t);
     }
-    .nav.scrolled { padding: 0.7rem 5%; }
+    .nav.scrolled { padding: 0.7rem 5%; padding-top: calc(0.7rem + var(--safe-top)); }
 
     .nav-logo {
       display: flex; align-items: center; gap: 10px; cursor: pointer;
@@ -103,6 +112,7 @@
     .nav-links a {
       font-size: 13.5px; font-weight: 500;
       color: var(--text-sub); transition: color var(--t);
+      min-height: unset !important;
     }
     .nav-links a:hover { color: var(--text); }
 
@@ -125,6 +135,9 @@
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       background: none; border: none; cursor: pointer;
+      /* FE-02: zone tactile 48px */
+      min-height: 48px; min-width: 48px;
+      align-items: center; justify-content: center;
     }
     .hamburger span {
       display: block; width: 22px; height: 2px;
@@ -134,14 +147,80 @@
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
 
-    .drawer {
-      display: none; position: fixed; inset: 0; z-index: 999;
-      background: rgba(8,11,20,0.98);
-      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    /* ================================================================
+       FE-02 — BOTTOM SHEET (remplace l'ancien drawer fullscreen)
+       Slide depuis le bas, backdrop semi-transparent, cubic-bezier smooth
+    ================================================================ */
+    .bs-backdrop {
+      display: none;
+      position: fixed; inset: 0; z-index: 998;
+      background: rgba(0,0,0,0);
+      transition: background 0.35s var(--ease);
     }
-    .drawer.open { display: flex; }
-    .drawer a { font-family: var(--font-d); font-size: 1.5rem; font-weight: 700; color: var(--text-sub); transition: color var(--t); }
-    .drawer a:hover { color: var(--violet-lt); }
+    .bs-backdrop.open {
+      display: block;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .bottom-sheet {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 999;
+      background: var(--surface);
+      border-top: 1px solid var(--border-v);
+      border-radius: 24px 24px 0 0;
+      padding: 0 0 calc(1.5rem + var(--safe-bottom));
+      /* FE-02: slide depuis le bas avec cubic-bezier naturel */
+      transform: translateY(100%);
+      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+      will-change: transform;
+      max-height: 85vh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+
+    /* Handle drag indicator */
+    .bs-handle {
+      width: 40px; height: 4px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      margin: 14px auto 8px;
+    }
+
+    /* Close button en haut à droite */
+    .bs-close {
+      position: absolute; top: 14px; right: 18px;
+      background: rgba(255,255,255,0.07); border: none;
+      width: 32px; height: 32px; border-radius: 50%;
+      color: var(--text-sub); font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: var(--t);
+    }
+    .bs-close:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
+    .bs-nav {
+      display: flex; flex-direction: column;
+      padding: 0.5rem 1.5rem 0;
+      gap: 4px;
+    }
+    .bs-nav a {
+      font-family: var(--font-d); font-size: 1.15rem; font-weight: 700;
+      color: var(--text-sub);
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: color var(--t), padding-left var(--t);
+      display: block; min-height: unset !important;
+    }
+    .bs-nav a:last-child { border-bottom: none; }
+    .bs-nav a:hover, .bs-nav a:active { color: var(--violet-lt); padding-left: 8px; }
+    .bs-nav a.bs-cta {
+      color: var(--green); border-bottom: none;
+      margin-top: 8px;
+    }
 
     /* ================================================================
        PROGRESS BAR
@@ -161,6 +240,7 @@
       padding: 13px 26px; font-size: 14px; font-weight: 600;
       border-radius: var(--r-sm); border: none; cursor: pointer;
       transition: var(--t); position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
 
@@ -187,7 +267,6 @@
       padding: 9rem 5% 4rem; text-align: center; position: relative; overflow: hidden;
     }
 
-    /* Fond ambiant animé */
     .hero-bg {
       position: absolute; inset: 0; z-index: 0; overflow: hidden;
     }
@@ -203,7 +282,6 @@
       50% { transform: translateY(-30px) scale(1.05); }
     }
 
-    /* Grid lines subtiles */
     .hero-grid {
       position: absolute; inset: 0; z-index: 0;
       background-image:
@@ -253,8 +331,7 @@
     }
 
     /* ================================================================
-       LIVE DASHBOARD (signature visuelle du hero)
-       Un mini-tableau de bord d'agents actifs
+       LIVE DASHBOARD
     ================================================================ */
     .live-board {
       position: relative; z-index: 2;
@@ -266,7 +343,6 @@
       overflow: hidden;
       box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(124,58,237,0.15);
     }
-    /* Barre de fenêtre style OS */
     .lb-bar {
       display: flex; align-items: center; gap: 8px;
       padding: 12px 18px;
@@ -280,7 +356,6 @@
     .lb-title { font-size: 12px; color: var(--text-muted); margin-left: auto; margin-right: auto; font-family: var(--font-d); letter-spacing: 1px; }
     .lb-live { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--green); font-weight: 600; }
 
-    /* Agent rows */
     .lb-agents { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 
     .agent-row {
@@ -327,6 +402,7 @@
     .lb-footer {
       padding: 10px 18px; border-top: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 6px;
     }
     .lb-stat { font-size: 11px; color: var(--text-muted); }
     .lb-stat span { color: var(--cyan); font-weight: 600; }
@@ -355,7 +431,7 @@
     }
 
     /* ================================================================
-       COMMENT ÇA MARCHE — 3 étapes
+       COMMENT ÇA MARCHE
     ================================================================ */
     #how { background: var(--surface); }
 
@@ -370,7 +446,6 @@
       position: relative;
     }
     .how-step:hover { border-color: var(--border-v); transform: translateY(-8px); }
-    /* Connector line */
     .how-step:not(:last-child)::after {
       content:'→'; position: absolute;
       right: -1.2rem; top: 50%; transform: translateY(-50%);
@@ -404,6 +479,7 @@
       background: rgba(124,58,237,0.15); border-color: var(--border-v); color: var(--violet-lt);
     }
 
+    /* FE-02: desktop — grid classique */
     .agents-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(310px,1fr));
       gap: 1.5rem;
@@ -439,7 +515,6 @@
     .ac-body .ac-sector { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.75rem; }
     .ac-body p { font-size: 0.875rem; color: var(--text-sub); line-height: 1.7; }
 
-    /* Chat preview */
     .ac-chat {
       margin: 1.25rem 1.75rem 0;
       background: var(--surface); border-radius: var(--r-md);
@@ -470,7 +545,6 @@
     }
     .ac-cta:hover { background: var(--violet); color: #fff; }
 
-    /* Capabilities tags */
     .ac-caps { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 1.75rem 1.25rem; }
     .cap-tag {
       font-size: 10px; padding: 3px 9px; border-radius: 50px;
@@ -605,7 +679,7 @@
     .ta-role { font-size: 11px; color: var(--text-muted); }
 
     /* ================================================================
-       FOIRE AUX QUESTIONS
+       FAQ
     ================================================================ */
     #faq { background: var(--void); }
 
@@ -622,6 +696,7 @@
       color: var(--text); border: none; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center; gap: 1rem;
       transition: background var(--t);
+      min-height: 56px;
     }
     .faq-q:hover { background: var(--card-hover); }
     .faq-icon {
@@ -641,7 +716,7 @@
     .faq-a-inner { padding: 0 1.5rem 1.5rem; font-size: 0.9rem; color: var(--text-sub); line-height: 1.75; }
 
     /* ================================================================
-       CONTACT / DÉMARRAGE
+       CONTACT
     ================================================================ */
     #contact { background: var(--surface); }
 
@@ -676,6 +751,8 @@
       color: var(--text); font-size: 0.88rem; font-family: var(--font-b);
       outline: none; resize: vertical;
       transition: border-color var(--t), box-shadow var(--t);
+      /* FE-02: prevent iOS zoom on focus (font-size >= 16px) */
+      font-size: max(16px, 0.88rem);
     }
     .form-g input:focus, .form-g select:focus, .form-g textarea:focus {
       border-color: var(--border-v);
@@ -695,6 +772,8 @@
       background: var(--void);
       border-top: 1px solid var(--border);
       padding: 3.5rem 5% 2rem;
+      /* FE-02: espace pour les FABs */
+      padding-bottom: calc(2rem + 80px + var(--safe-bottom));
     }
     .footer-grid {
       display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr;
@@ -703,7 +782,7 @@
     .fb-brand p { font-size: 0.85rem; color: var(--text-sub); margin-top: 1rem; max-width: 260px; line-height: 1.7; }
     .f-col h4 { font-family: var(--font-d); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.1rem; }
     .f-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
-    .f-col ul li a { font-size: 0.85rem; color: var(--text-sub); transition: color var(--t); }
+    .f-col ul li a { font-size: 0.85rem; color: var(--text-sub); transition: color var(--t); min-height: unset !important; display: inline; }
     .f-col ul li a:hover { color: var(--violet-lt); }
     .footer-bottom {
       max-width: 1140px; margin: 0 auto;
@@ -723,19 +802,55 @@
     .rev-r.in { opacity:1; transform:translateX(0); }
 
     /* ================================================================
-       FLOATING TRIAL BUTTON
+       FE-02 — DOUBLE FAB (WhatsApp + Essai gratuit)
+       Remplace l'ancien FAB simple
     ================================================================ */
-    .fab {
-      position: fixed; bottom: 2rem; right: 2rem; z-index: 900;
-      background: linear-gradient(135deg, var(--violet), #4f46e5);
-      border: none; border-radius: 50px;
-      padding: 13px 24px; font-size: 13px; font-weight: 700;
-      color: #fff; cursor: pointer; transition: var(--t);
-      box-shadow: 0 8px 32px rgba(124,58,237,0.5);
-      display: flex; align-items: center; gap: 8px;
+    .fab-group {
+      position: fixed; bottom: calc(2rem + var(--safe-bottom)); right: 1.5rem;
+      z-index: 900;
+      display: flex; flex-direction: column; gap: 12px; align-items: flex-end;
     }
-    .fab:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(124,58,237,0.6); }
-    .fab-pulse { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 1.5s ease infinite; }
+
+    .fab-label {
+      font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 6px;
+      white-space: nowrap; pointer-events: none;
+      opacity: 0; transform: translateX(8px);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .fab-item { display: flex; align-items: center; gap: 10px; }
+    .fab-item:hover .fab-label { opacity: 1; transform: translateX(0); }
+
+    .fab-btn {
+      width: 54px; height: 54px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: none; cursor: pointer;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+      transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      -webkit-tap-highlight-color: transparent;
+      flex-shrink: 0;
+    }
+    .fab-btn:hover, .fab-btn:active { transform: scale(1.1) translateY(-2px); }
+    .fab-btn:active { transform: scale(0.95); }
+
+    /* FAB WhatsApp — vert WhatsApp */
+    .fab-wa {
+      background: linear-gradient(135deg, #25d366, #128c7e);
+      box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+    }
+    .fab-wa:hover { box-shadow: 0 10px 32px rgba(37,211,102,0.6); }
+
+    /* FAB Essai — violet primaire */
+    .fab-trial {
+      background: linear-gradient(135deg, var(--violet), #4f46e5);
+      box-shadow: 0 6px 24px rgba(124,58,237,0.5);
+    }
+    .fab-trial:hover { box-shadow: 0 10px 32px rgba(124,58,237,0.65); }
+
+    .fab-btn svg { width: 24px; height: 24px; }
+    .fab-pulse-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulse 1.5s ease infinite; }
+
+    /* Sur desktop, on cache les labels par défaut et on les montre au hover (déjà géré) */
 
     /* ================================================================
        RESPONSIVE
@@ -746,6 +861,7 @@
       .how-grid { grid-template-columns: 1fr; }
       .how-step::after { display:none; }
     }
+
     @media (max-width: 768px) {
       .nav-links { display: none; }
       .nav-right .nav-login { display: none; }
@@ -753,14 +869,88 @@
       .contact-wrap { grid-template-columns: 1fr; }
       .contact-left { border-right: none; border-bottom: 1px solid var(--border); }
       .footer-grid { grid-template-columns: 1fr; }
+      /* FE-02: formulaire mobile en colonne unique */
       .form-row-2 { grid-template-columns: 1fr; }
       .trial-features { flex-direction: column; align-items: center; }
       .lb-agents { padding: 10px; }
     }
+
     @media (max-width: 480px) {
       .hero h1 { font-size: 1.9rem; }
-      .agents-grid { grid-template-columns: 1fr; }
+
+      /* FE-02: hero réduit sur mobile — padding réduit */
+      .hero { padding: 7rem 4% 2.5rem; }
+
+      /* FE-02: live board sur mobile — seulement 2 agent-rows visibles */
+      .lb-agents .agent-row:nth-child(n+3) { display: none; }
+
+      /* FE-02: catalogue en scroll horizontal (carousel scroll-snap) */
+      .agents-grid {
+        grid-template-columns: unset;
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        /* Masquer la scrollbar mais garder la fonctionnalité */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        /* Débordement léger pour indiquer qu'il y a plus */
+        padding-left: 4%;
+        padding-right: 4%;
+        margin-left: -4%;
+        margin-right: -4%;
+      }
+      .agents-grid::-webkit-scrollbar { display: none; }
+      .agent-card {
+        min-width: 80vw;
+        max-width: 300px;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        /* Désactiver le hover transform sur mobile (pas de souris) */
+        transform: none !important;
+      }
+      .agent-card:hover { transform: none; }
+
+      /* Indicateur de scroll */
+      .catalogue-scroll-hint {
+        display: flex; align-items: center; gap: 8px;
+        font-size: 11px; color: var(--text-muted);
+        margin-bottom: 0.75rem; margin-top: -0.5rem;
+      }
+      .catalogue-scroll-hint svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+      /* Pagination dots pour le carousel */
+      .carousel-dots {
+        display: flex; justify-content: center; gap: 6px;
+        margin-top: 1rem;
+      }
+      .carousel-dot {
+        width: 6px; height: 6px; border-radius: 3px;
+        background: var(--border-v); opacity: 0.4;
+        transition: opacity 0.3s, width 0.3s;
+      }
+      .carousel-dot.active { opacity: 1; width: 18px; background: var(--violet-lt); }
+
+      /* FAB group — taille légèrement réduite sur très petit écran */
+      .fab-btn { width: 50px; height: 50px; }
+      .fab-btn svg { width: 22px; height: 22px; }
+
+      /* Sections moins de padding sur mobile */
+      .sec { padding: 3.5rem 4%; }
+      footer { padding: 2.5rem 4% calc(2rem + 80px + var(--safe-bottom)); }
+
+      /* Tarifs — max-width none sur très petit écran */
+      .pricing-grid { max-width: unset; }
+
+      /* Trial inner padding réduit */
+      .trial-inner { padding: 2.5rem 1.5rem; }
+
+      /* Contact left padding réduit */
+      .contact-left { padding: 2rem 1.5rem; }
+      .contact-right { padding: 2rem 1.5rem; }
     }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
     }
@@ -771,14 +961,22 @@
 <!-- Progress bar -->
 <div id="pbar"></div>
 
-<!-- Drawer mobile -->
-<div class="drawer" id="drawer">
-  <a href="#how" onclick="closeDrawer()">Comment ça marche</a>
-  <a href="#catalogue" onclick="closeDrawer()">Catalogue agents</a>
-  <a href="#tarifs" onclick="closeDrawer()">Tarifs</a>
-  <a href="#temoignages" onclick="closeDrawer()">Témoignages</a>
-  <a href="#faq" onclick="closeDrawer()">FAQ</a>
-  <a href="#trial" onclick="closeDrawer()" style="color:var(--green)">Essai gratuit →</a>
+<!-- ================================================================
+     FE-02 — BOTTOM SHEET (remplace l'ancien drawer fullscreen)
+================================================================ -->
+<div class="bs-backdrop" id="bs-backdrop" onclick="closeBottomSheet()"></div>
+
+<div class="bottom-sheet" id="bottom-sheet" role="dialog" aria-modal="true" aria-label="Menu navigation">
+  <div class="bs-handle"></div>
+  <button class="bs-close" onclick="closeBottomSheet()" aria-label="Fermer le menu">✕</button>
+  <nav class="bs-nav">
+    <a href="#how" onclick="closeBottomSheet()">Comment ça marche</a>
+    <a href="#catalogue" onclick="closeBottomSheet()">Catalogue agents</a>
+    <a href="#tarifs" onclick="closeBottomSheet()">Tarifs</a>
+    <a href="#temoignages" onclick="closeBottomSheet()">Témoignages</a>
+    <a href="#faq" onclick="closeBottomSheet()">FAQ</a>
+    <a href="#trial" onclick="closeBottomSheet()" class="bs-cta">Essai gratuit →</a>
+  </nav>
 </div>
 
 <!-- ================================================================
@@ -801,7 +999,9 @@
   <div class="nav-right">
     <button class="nav-login">Se connecter</button>
     <button class="nav-cta" onclick="document.getElementById('trial').scrollIntoView({behavior:'smooth'})">Essai gratuit 3j</button>
-    <button class="hamburger" id="hbg"><span></span><span></span><span></span></button>
+    <button class="hamburger" id="hbg" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -844,7 +1044,7 @@
       </button>
     </div>
 
-    <!-- LIVE DASHBOARD — signature visuelle -->
+    <!-- LIVE DASHBOARD -->
     <div class="live-board">
       <div class="lb-bar">
         <div class="lb-dot lb-dot-r"></div>
@@ -854,6 +1054,7 @@
         <div class="lb-live"><div class="pulse"></div> EN DIRECT</div>
       </div>
 
+      <!-- FE-02: sur mobile < 480px seulement 2 rows affichées (via CSS) -->
       <div class="lb-agents" id="lb-agents">
         <div class="agent-row">
           <div class="agent-avatar av-med">🩺</div>
@@ -957,6 +1158,12 @@
       <div class="sec-label">Catalogue</div>
       <h2 class="sec-title">Les agents disponibles</h2>
       <p class="sec-sub">Chaque agent est sculpté selon votre business — restauration, médecin, immobilier, grossiste, et plus. Multi-tâche, sur mesure, 100% personnalisé.</p>
+    </div>
+
+    <!-- FE-02: indicateur scroll horizontal visible uniquement sur mobile -->
+    <div class="catalogue-scroll-hint" id="scroll-hint" style="display:none;">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Glissez pour voir plus d'agents
     </div>
 
     <div class="cat-filter" id="cat-filter">
@@ -1154,6 +1361,10 @@
       </div>
 
     </div><!-- /agents-grid -->
+
+    <!-- FE-02: dots pagination carousel mobile -->
+    <div class="carousel-dots" id="carousel-dots" style="display:none;"></div>
+
   </div>
 </section>
 
@@ -1171,7 +1382,6 @@
     </div>
 
     <div class="pricing-grid">
-
       <!-- Starter -->
       <div class="price-card rev">
         <div class="pc-head">
@@ -1255,7 +1465,6 @@
           <button class="btn btn-ghost pc-btn" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Nous contacter</button>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1279,10 +1488,9 @@
         <div class="tf-item">Support inclus 24/7</div>
       </div>
 
-      <!-- Mini form d'inscription -->
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto;" id="trial-form">
         <input type="email" id="trial-email" placeholder="votre@email.com"
-          style="flex:1;min-width:200px;padding:13px 18px;background:rgba(255,255,255,0.07);border:1px solid var(--border-v);border-radius:var(--r-sm);color:var(--text);font-size:14px;outline:none;font-family:var(--font-b);">
+          style="flex:1;min-width:200px;padding:13px 18px;background:rgba(255,255,255,0.07);border:1px solid var(--border-v);border-radius:var(--r-sm);color:var(--text);font-size:max(16px,14px);outline:none;font-family:var(--font-b);">
         <button class="btn btn-cyan" onclick="startTrial()" style="white-space:nowrap;">
           Démarrer gratuitement →
         </button>
@@ -1359,7 +1567,6 @@
     </div>
 
     <div class="faq-list">
-
       <div class="faq-item rev">
         <button class="faq-q" onclick="toggleFaq(this)">
           L'agent comprend-il le dialecte algérien (darija) ?
@@ -1407,7 +1614,6 @@
         </button>
         <div class="faq-a"><div class="faq-a-inner">Oui. Sur les plans Business et Enterprise, vous pouvez déployer plusieurs agents spécialisés. Par exemple, un cabinet médical avec plusieurs spécialités peut avoir un agent par médecin, chacun avec son propre agenda et ses propres scripts.</div></div>
       </div>
-
     </div>
   </div>
 </section>
@@ -1432,14 +1638,14 @@
           <div class="ci-ico">📱</div>
           <div>
             <div class="ci-label">WhatsApp / Téléphone</div>
-            <div class="ci-val">+213 555 00 00 00</div>
+            <div class="ci-val">+213 795 05 04 59</div>
           </div>
         </div>
         <div class="ci-row">
           <div class="ci-ico">📧</div>
           <div>
             <div class="ci-label">Email</div>
-            <div class="ci-val">hello@agentia.dz</div>
+            <div class="ci-val">chriautomate@gmail.com</div>
           </div>
         </div>
         <div class="ci-row">
@@ -1456,11 +1662,12 @@
       </div>
 
       <div class="contact-right">
+        <!-- FE-02: formulaire en colonne unique sur mobile via .form-row-2 → 1fr -->
         <form id="contact-form" onsubmit="submitContact(event)" novalidate>
           <div class="form-row-2">
             <div class="form-g">
               <label>Prénom & Nom *</label>
-              <input type="text" id="cf-nom" placeholder="Votre nom">
+              <input type="text" id="cf-nom" placeholder="Votre nom" autocomplete="name">
             </div>
             <div class="form-g">
               <label>Activité *</label>
@@ -1478,11 +1685,11 @@
           <div class="form-row-2">
             <div class="form-g">
               <label>Email *</label>
-              <input type="email" id="cf-email" placeholder="votre@email.com">
+              <input type="email" id="cf-email" placeholder="votre@email.com" autocomplete="email">
             </div>
             <div class="form-g">
               <label>Téléphone</label>
-              <input type="tel" id="cf-tel" placeholder="0XXX XX XX XX">
+              <input type="tel" id="cf-tel" placeholder="0XXX XX XX XX" autocomplete="tel">
             </div>
           </div>
           <div class="form-g">
@@ -1554,11 +1761,11 @@
   <div class="footer-bottom">
     <span>Chriautomate © 2026 · Algérie · Tous droits réservés</span>
     <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
-      <a href="tel:+213795050459" style="color:var(--text-sub);display:flex;align-items:center;gap:6px;font-size:13px;transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-sub)'">
+      <a href="tel:+213795050459" style="color:var(--text-sub);display:flex;align-items:center;gap:6px;font-size:13px;transition:color 0.3s;min-height:unset!important;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-sub)'">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.42 2 2 0 0 1 3.6 1.24h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.83a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
         0795 05 04 59
       </a>
-      <a href="mailto:chriautomate@gmail.com" style="color:var(--text-sub);display:flex;align-items:center;gap:6px;font-size:13px;transition:color 0.3s;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-sub)'">
+      <a href="mailto:chriautomate@gmail.com" style="color:var(--text-sub);display:flex;align-items:center;gap:6px;font-size:13px;transition:color 0.3s;min-height:unset!important;" onmouseover="this.style.color='var(--cyan)'" onmouseout="this.style.color='var(--text-sub)'">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         chriautomate@gmail.com
       </a>
@@ -1567,11 +1774,31 @@
   </div>
 </footer>
 
-<!-- Floating CTA -->
-<button class="fab" onclick="document.getElementById('trial').scrollIntoView({behavior:'smooth'})">
-  <div class="fab-pulse"></div>
-  Essai gratuit 3 jours
-</button>
+<!-- ================================================================
+     FE-02 — DOUBLE FAB (WhatsApp + Essai gratuit)
+================================================================ -->
+<div class="fab-group">
+  <!-- FAB WhatsApp -->
+  <div class="fab-item">
+    <span class="fab-label">WhatsApp</span>
+    <a href="https://wa.me/213795050459" target="_blank" rel="noopener" class="fab-btn fab-wa" aria-label="Contacter sur WhatsApp">
+      <svg fill="currentColor" viewBox="0 0 24 24" style="color:#fff;">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+  </div>
+
+  <!-- FAB Essai gratuit -->
+  <div class="fab-item">
+    <span class="fab-label">Essai gratuit</span>
+    <button class="fab-btn fab-trial" onclick="document.getElementById('trial').scrollIntoView({behavior:'smooth'})" aria-label="Démarrer l'essai gratuit">
+      <div class="fab-pulse-dot" style="position:absolute;top:10px;right:10px;"></div>
+      <svg fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+      </svg>
+    </button>
+  </div>
+</div>
 
 <!-- ================================================================
      JAVASCRIPT
@@ -1588,18 +1815,53 @@ window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 50);
 });
 
-/* ---- Hamburger ---- */
+/* ================================================================
+   FE-02 — BOTTOM SHEET navigation mobile
+================================================================ */
 const hbg = document.getElementById('hbg');
-const drawer = document.getElementById('drawer');
-hbg.addEventListener('click', () => {
-  hbg.classList.toggle('open');
-  drawer.classList.toggle('open');
-  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
-});
-function closeDrawer() {
-  hbg.classList.remove('open'); drawer.classList.remove('open');
-  document.body.style.overflow = '';
+const bottomSheet = document.getElementById('bottom-sheet');
+const bsBackdrop = document.getElementById('bs-backdrop');
+
+function openBottomSheet() {
+  bottomSheet.classList.add('open');
+  bsBackdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  hbg.classList.add('open');
+  hbg.setAttribute('aria-expanded', 'true');
 }
+
+function closeBottomSheet() {
+  bottomSheet.classList.remove('open');
+  bsBackdrop.classList.remove('open');
+  document.body.style.overflow = '';
+  hbg.classList.remove('open');
+  hbg.setAttribute('aria-expanded', 'false');
+}
+
+hbg.addEventListener('click', () => {
+  bottomSheet.classList.contains('open') ? closeBottomSheet() : openBottomSheet();
+});
+
+/* Fermer avec Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeBottomSheet();
+});
+
+/* FE-02 — Swipe down pour fermer le bottom sheet */
+(function() {
+  let startY = 0;
+  bottomSheet.addEventListener('touchstart', e => { startY = e.touches[0].clientY; }, { passive: true });
+  bottomSheet.addEventListener('touchmove', e => {
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 0) bottomSheet.style.transform = `translateY(${dy}px)`;
+  }, { passive: true });
+  bottomSheet.addEventListener('touchend', e => {
+    const dy = e.changedTouches[0].clientY - startY;
+    bottomSheet.style.transform = '';
+    bottomSheet.style.transition = 'transform 0.42s cubic-bezier(0.32, 0.72, 0, 1)';
+    if (dy > 80) closeBottomSheet();
+  });
+})();
 
 /* ---- Scroll reveal ---- */
 const io = new IntersectionObserver(es => es.forEach(e => {
@@ -1616,7 +1878,6 @@ document.querySelectorAll('.rev, .rev-l, .rev-r').forEach(el => io.observe(el));
     totalEl.textContent = total.toLocaleString('fr');
   }, 3500);
 
-  // Individual agent counters
   const counters = [
     { id: 'ac1', val: 12, incEvery: 8000 },
     { id: 'ac2', val: 38, incEvery: 4000 },
@@ -1634,7 +1895,6 @@ document.querySelectorAll('.rev, .rev-l, .rev-r').forEach(el => io.observe(el));
     }, c.incEvery);
   });
 
-  // Animate action text cycling
   const actions = [
     { id: 'ac1', msgs: ['Planification RDV en cours...', 'Rappel patient envoyé · 14h30', 'Confirmation RDV Dr. Mehdi', 'Annulation traitée · slot libéré'] },
     { id: 'ac2', msgs: ['Prise de commande · 1 Margherita...', 'Commande validée · livraison 35 min', 'Calcul devis · 3 pizzas + boissons', 'Client rappelé · heure modifiée'] },
@@ -1667,7 +1927,59 @@ document.getElementById('cat-filter').addEventListener('click', e => {
   document.querySelectorAll('.agent-card').forEach(c => {
     c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
   });
+  /* FE-02: reset scroll position du carousel sur filtre */
+  const grid = document.getElementById('agents-grid');
+  grid.scrollTo({ left: 0, behavior: 'smooth' });
+  updateCarouselDots();
 });
+
+/* ================================================================
+   FE-02 — CAROUSEL SCROLL-SNAP + PAGINATION DOTS (mobile)
+================================================================ */
+function isMobile() { return window.innerWidth <= 480; }
+
+function initCarousel() {
+  const grid = document.getElementById('agents-grid');
+  const dotsContainer = document.getElementById('carousel-dots');
+  const scrollHint = document.getElementById('scroll-hint');
+
+  if (!isMobile()) {
+    dotsContainer.style.display = 'none';
+    scrollHint.style.display = 'none';
+    return;
+  }
+
+  scrollHint.style.display = 'flex';
+
+  // Générer les dots
+  const cards = grid.querySelectorAll('.agent-card:not([style*="display: none"])');
+  dotsContainer.style.display = 'flex';
+  dotsContainer.innerHTML = '';
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    });
+    dotsContainer.appendChild(dot);
+  });
+}
+
+function updateCarouselDots() {
+  if (!isMobile()) return;
+  const grid = document.getElementById('agents-grid');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const cards = grid.querySelectorAll('.agent-card:not([style*="display: none"])');
+  const scrollLeft = grid.scrollLeft;
+  const cardWidth = cards[0] ? cards[0].offsetWidth + 16 : 1;
+  const activeIdx = Math.round(scrollLeft / cardWidth);
+  dots.forEach((d, i) => d.classList.toggle('active', i === activeIdx));
+}
+
+const agentGrid = document.getElementById('agents-grid');
+agentGrid.addEventListener('scroll', updateCarouselDots, { passive: true });
+window.addEventListener('resize', initCarousel);
+initCarousel();
 
 /* ---- FAQ accordion ---- */
 function toggleFaq(btn) {
